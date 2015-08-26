@@ -14,6 +14,6 @@ public class ResourceConfiguration extends WebMvcConfigurerAdapter {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**")
-                .addResourceLocations("file:".concat(viewPath).concat("/"));
+                .addResourceLocations("file:///".concat(viewPath).concat("/"));
     }
 }
