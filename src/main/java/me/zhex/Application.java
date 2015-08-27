@@ -8,8 +8,11 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerCollection;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.webapp.WebAppContext;
 
+import java.io.File;
+import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 
@@ -19,6 +22,9 @@ public class Application {
     static final String INCLUDE_JAR_PATTERN = "org.eclipse.jetty.server.webapp.ContainerIncludeJarPattern";
     static final String JSP_PATTERN = ".*/[^/]*servlet-api-[^/]*\\.jar$|.*/javax.servlet.jsp.jstl-.*\\.jar$|.*/[^/]*taglibs.*\\.jar$";
 
+    static {
+        System.setProperty("org.apache.jasper.compiler.disablejsr199", "false");
+    }
 
     public static void main(String[] args) throws Exception {
         final int port = Integer.getInteger("server.port", 8080);
@@ -37,7 +43,7 @@ public class Application {
 
         final ServletContextHandler servletContextHandler = new ServletContextHandler(null, "/", false, false);
         servletContextHandler.addServlet(new ServletHolder(new CustomServlet(ctx)), "/");
-//        final URL url = Application.class.getProtectionDomain().getCodeSource().getLocation();
+        final URL url = Application.class.getProtectionDomain().getCodeSource().getLocation();
 
 //        File tempDir = new File(System.getProperty("java.io.tmpdir"));
 //        File scratchDir = new File(tempDir.toString(), "jtr");
@@ -50,11 +56,11 @@ public class Application {
 
         WebAppContext context = new WebAppContext(viewPath, ctx);
 
-//        if (url != null) {
-//            context.getMetaData().addWebInfJar(Resource.newResource(url));
-//            String descriptor = "jar:" + url + "!/empty-web.xml";
-//            context.setDescriptor(descriptor);
-//        }
+        if (url != null) {
+            context.getMetaData().addWebInfJar(Resource.newResource(url));
+            String descriptor = "jar:" + url + "!/empty-web.xml";
+            context.setDescriptor(descriptor);
+        }
 
 
         context.setAttribute(INCLUDE_JAR_PATTERN, JSP_PATTERN);
@@ -73,7 +79,7 @@ public class Application {
         return server;
     }
 
-    static List<ContainerInitializer> jspInitializers() {
+    private static List<ContainerInitializer> jspInitializers() {
         JettyJasperInitializer sci = new JettyJasperInitializer();
         ContainerInitializer initializer = new ContainerInitializer(sci, null);
         return Collections.singletonList(initializer);
