@@ -1,21 +1,15 @@
 package me.zhex;
 
-import org.apache.jasper.servlet.JspServlet;
 import org.eclipse.jetty.annotations.ServletContainerInitializersStarter;
 import org.eclipse.jetty.apache.jsp.JettyJasperInitializer;
 import org.eclipse.jetty.plus.annotation.ContainerInitializer;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.HandlerCollection;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.webapp.WebAppContext;
 
-import java.io.File;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.Collections;
 import java.util.List;
 
@@ -37,10 +31,12 @@ public class Application {
     }
 
     public static Server createServer(String viewPath, int port) {
+        final String ctx = "/r/";
+
         Server server = new Server(port);
 
         final ServletContextHandler servletContextHandler = new ServletContextHandler(null, "/", false, false);
-        servletContextHandler.addServlet(new ServletHolder(new CustomServlet()), "/");
+        servletContextHandler.addServlet(new ServletHolder(new CustomServlet(ctx)), "/");
 //        final URL url = Application.class.getProtectionDomain().getCodeSource().getLocation();
 
 //        File tempDir = new File(System.getProperty("java.io.tmpdir"));
@@ -52,7 +48,7 @@ public class Application {
 //        }
 
 
-        WebAppContext context = new WebAppContext(viewPath, "/r/");
+        WebAppContext context = new WebAppContext(viewPath, ctx);
 
 //        if (url != null) {
 //            context.getMetaData().addWebInfJar(Resource.newResource(url));

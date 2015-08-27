@@ -11,10 +11,15 @@ import java.io.IOException;
 
 public class CustomServlet extends HttpServlet {
 
+    private String ctx;
+
+    public CustomServlet(String ctx) {
+        this.ctx = ctx;
+    }
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
-
         doRequest(req, res);
     }
 
@@ -30,7 +35,7 @@ public class CustomServlet extends HttpServlet {
         }
 
         req.getServletContext()
-                .getContext("/r/")
+                .getContext(ctx)
                 .getRequestDispatcher(template)
                 .forward(req, res);
     }
