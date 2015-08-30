@@ -13,12 +13,18 @@ public class CustomServlet extends HttpServlet {
 
     private String ctx;
 
-    public CustomServlet(String ctx) {
-        this.ctx = ctx;
+    public CustomServlet() {
+        ctx = "/jsp";
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res)
+            throws ServletException, IOException {
+        doRequest(req, res);
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
         doRequest(req, res);
     }
@@ -29,9 +35,15 @@ public class CustomServlet extends HttpServlet {
         final String template = req.getParameter("template");
         final String data = req.getParameter("data");
 
+        final String ext = template.substring(template.lastIndexOf("."));
+        if (ext.equals(".vm")) ctx = "/vm";
+
+
         JSONObject d = JSON.parseObject(data);
-        for (String key : d.keySet()) {
-            req.setAttribute(key, d.get(key));
+        if (d != null) {
+            for (String key : d.keySet()) {
+                req.setAttribute(key, d.get(key));
+            }
         }
 
         req.getServletContext()
