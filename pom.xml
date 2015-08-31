@@ -11,7 +11,7 @@
 
     <properties>
         <jetty.version>9.2.6.v20141205</jetty.version>
-        <java.version>1.8</java.version>
+        <java.version>1.7</java.version>
     </properties>
 
     <dependencies>

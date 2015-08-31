@@ -34,7 +34,11 @@ public class VelocityHandler extends AbstractHandler {
                        Request baseRequest,
                        HttpServletRequest request,
                        HttpServletResponse response) throws IOException, ServletException {
+
         baseRequest.setHandled(true);
+
+        response.setContentType("text/html");
+        response.setCharacterEncoding(StringUtil.__UTF8);
 
         Enumeration<String> attrs = request.getAttributeNames();
         final VelocityContext context = new VelocityContext();
