@@ -12,9 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Properties;
 
 public class VelocityHandler extends AbstractHandler {
@@ -36,9 +34,6 @@ public class VelocityHandler extends AbstractHandler {
                        HttpServletResponse response) throws IOException, ServletException {
 
         baseRequest.setHandled(true);
-
-        response.setContentType("text/html");
-        response.setCharacterEncoding(StringUtil.__UTF8);
 
         Enumeration<String> attrs = request.getAttributeNames();
         final VelocityContext context = new VelocityContext();

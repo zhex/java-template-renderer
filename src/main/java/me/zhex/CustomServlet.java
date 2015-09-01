@@ -2,6 +2,7 @@ package me.zhex;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import org.eclipse.jetty.util.StringUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -45,6 +46,9 @@ public class CustomServlet extends HttpServlet {
                 req.setAttribute(key, d.get(key));
             }
         }
+
+        res.setContentType("text/html");
+        res.setCharacterEncoding(StringUtil.__UTF8);
 
         req.getServletContext()
                 .getContext(ctx)
